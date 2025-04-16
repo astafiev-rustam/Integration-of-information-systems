@@ -7,9 +7,9 @@
 |СЕМЕСТР|1 семестр, 2024/2025 уч. год|
 
 Ссылка на GitHub репозиторий:
-https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1
+https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2
 
-## Практическое занятие №1 - Жизненный цикл ПО, место интеграции в жизненном цикле
+## Практическое занятие №2 - Жизненный цикл ПО, место интеграции в жизненном цикле
 
 **Формат:** Групповая работа (3–4 человека) → Решение кейсов → Короткие презентации (5–7 мин)  
 
