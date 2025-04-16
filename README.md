@@ -7,7 +7,7 @@
 |СЕМЕСТР|1 семестр, 2024/2025 уч. год|
 
 Ссылка на GitHub репозиторий:
-https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2
+https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1
 
 ## Практическое занятие №1 - Архитектура ПО и паттерны проектирования
 
