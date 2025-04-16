@@ -7,6 +7,6 @@
 
 Некоторые из материалов курса представлены в соответствующих ветках данного репозитория.
 
-Практика 1 - [Жизненный цикл ПО, место интеграции в ЖЦ](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1)
+Практика 1 - [Архитектура программного обеспечения и паттерны проектирования](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1)
 
-Практика 2 - [Архитектура программного обеспечения и паттерны проектирования](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2)
+Практика 2 - [Жизненный цикл ПО, место интеграции в ЖЦ](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2)
