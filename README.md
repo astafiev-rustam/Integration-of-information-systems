@@ -7,7 +7,7 @@
 |СЕМЕСТР|1 семестр, 2024/2025 уч. год|
 
 Ссылка на GitHub репозиторий:
-https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-5
+https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-6
 
 ## Практическое занятие №6 - Принципы RESTful API и его ограничения. Продолжение
 
