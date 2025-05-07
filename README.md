@@ -7,10 +7,10 @@
 |СЕМЕСТР|1 семестр, 2024/2025 уч. год|
 
 Ссылка на GitHub репозиторий:
-https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-6
+https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-7
 
-## Практическое занятие №6 - Принципы RESTful API и его ограничения. Продолжение
+## Практическое занятие №7 - GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие
 
-### Разработка и спецификация API
+### Работа с GraphQL и спецификация
 
 В рамках данного практического занятия необходимо последовательно выполнить шаги из приложенного файла практического занятия
