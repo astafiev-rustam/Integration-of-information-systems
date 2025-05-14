@@ -1,32 +1,239 @@
-# Интеграция информационных систем с использованием API и микросервисов
 |||
 |---|---|
-|Направление подготовки|Дополнительная профессиональная программа профессиональной переподготовки|
+|ДИСЦИПЛИНА|Интеграция информационных систем с использованием API и микросервисов|
 |Подразделение|ПИШ СВЧ-электроники|
-|Курс, семестр|1 семестр|
+|ВИД УЧЕБНОГО МАТЕРИАЛА|Методические указания к практическим занятиям|
+|ПРЕПОДАВАТЕЛЬ|Астафьев Рустам Уралович|
+|СЕМЕСТР|1 семестр, 2024/2025 уч. год|
 
-## Логика курса
+Ссылка на GitHub репозиторий:
+https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-10
 
-Блок моих занятий нацелен на получение **базовых навыков** в области использования **основных технологий и инструментов при разработке API** и их роли в построении программного обеспечения.
+## Практическое занятие №10 - Аутентификация (OAuth2, JWT). Управление версиями API. Продолжение.
 
-Ожидается, что занятия будут построены так, чтобы задания формулировались в два трека: **Разработка** и **Аналитика**, то есть будет предусмотрена дифференциация на тех, кто чувствует себя уверенно в области разработки программных модулей и тех, кто чувствует себя уверенно в области системной аналитики.
+## **Введение в управление версиями API**
+Современные API редко остаются статичными — они постоянно развиваются, добавляются новые функции, изменяются форматы данных. Однако изменения в API могут ломать существующих клиентов, что приводит к потере пользователей и репутационным рискам. Управление версиями API позволяет вносить изменения, сохраняя работоспособность старых клиентов. В этом занятии мы рассмотрим ключевые стратегии версионирования, их практическую реализацию и лучшие практики.
 
-Некоторые из материалов курса представлены в соответствующих ветках данного репозитория:
+---
 
-|№ занятия|Тема занятия|
-|---|---|
-|1|[Эволюция архитектур: монолит, SOA, микросервисы](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1)|
-|2|[Зачем нужна интеграция: задачи, подходы и основные принципы](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2)|
-|3|[REST, SOAP, GraphQL, gRPC. Форматы данных: JSON, XML, Protocol Buffers](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-3)|
-|4|[Обзор платформ (Apache Camel, MuleSoft, RabbitMQ). Практика использования брокеров сообщений и шины данных](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-4)|
-|5|[Принципы RESTful API и его ограничения](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-5)|
-|6|[Принципы RESTful API и его ограничения. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-6)|
-|7|[GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-7)|
-|8|[GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-8)|
-|9|[Аутентификация (OAuth2, JWT). Управление версиями API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-9)|
-|10|[Аутентификация (OAuth2, JWT). Управление версиями API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-10)|
-|11|[Создание RESTful API. Реализация GraphQL и gRPC API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-11)|
-|12|[Создание RESTful API. Реализация GraphQL и gRPC API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-12)|
-|13|[Обзор фреймворков (Spring Boot, Micronaut, Node.js). Взаимодействие через API Gateway](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-13)|
-|14|[Связь между микросервисами: API и брокеры сообщений](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-14)|
-|15|[Связь между микросервисами: API и брокеры сообщений. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-15)|
+## **Теоретическая часть**
+
+### **Проблема обратной совместимости**
+Когда API меняется, старые клиенты (мобильные приложения, веб-сайты, интеграции) могут перестать работать. Например, если удалить поле `username` из ответа API, все клиенты, которые его использовали, сломаются. Проблема усугубляется, когда клиенты обновляются не сразу — некоторые пользователи могут месяцами использовать старые версии приложений.
+
+### **Стратегии версионирования API**
+
+**URI Versioning (версионирование в пути URL)**
+Один из самых простых и популярных подходов — добавление номера версии прямо в URL. Например:
+- `https://api.example.com/v1/users` — первая версия API
+- `https://api.example.com/v2/users` — вторая версия
+
+Такой подход прост в реализации и явно указывает клиентам, какую версию они используют. Однако он "загрязняет" URL и может усложнять маршрутизацию.
+
+**Query Parameter Versioning (версионирование через параметр запроса)**
+Альтернативный вариант — передача версии как параметра запроса:
+- `https://api.example.com/users?version=1`
+- `https://api.example.com/users?version=2`
+
+Этот метод более гибкий и удобен для A/B-тестирования, но менее явный, чем URI Versioning.
+
+**Header Versioning (версионирование через HTTP-заголовки)**
+Более "чистый" подход — передача версии в заголовках запроса:
+```
+GET /users HTTP/1.1
+Accept: application/json; version=1
+```
+
+Это сохраняет URL чистыми, но усложняет тестирование и отладку, так как требует специальных инструментов для работы с заголовками.
+
+**Media Type Versioning (кастомные типы контента)**
+Самый стандартизированный подход (описан в RFC 6838) — использование специальных media types:
+```
+GET /users HTTP/1.1
+Accept: application/vnd.company.api.v1+json
+```
+
+Этот метод широко используется в RESTful API, но может быть избыточным для простых проектов.
+
+### **Semantic Versioning для API**
+Для управления изменениями полезно использовать Semantic Versioning (SemVer):
+- **MAJOR** — обратно несовместимые изменения (новая версия API)
+- **MINOR** — новые функции с сохранением совместимости
+- **PATCH** — исправления ошибок без изменения интерфейса
+
+Например, переход с `v1.2.3` на `v2.0.0` означает серьезные изменения, которые могут сломать клиентов.
+
+---
+
+## **Практическая часть**
+
+**Обратите внимание, что все примеры носят ознакомительный характер и могут содержать устаревшие библиотеки**
+
+### **Пример 1: Реализация версий API в Node.js (Express)**
+
+**Установка зависимостей:**
+```bash
+npm init -y
+npm install express body-parser
+```
+
+**Структура проекта:**
+```
+project/
+├── v1/
+│   └── users.js
+├── v2/
+│   └── users.js
+└── app.js
+```
+
+**Файл `v1/users.js`:**
+```javascript
+const express = require('express');
+const router = express.Router();
+
+router.get('/', (req, res) => {
+  res.json({
+    version: 'v1',
+    users: [
+      { id: 1, name: 'Alice' },
+      { id: 2, name: 'Bob' }
+    ]
+  });
+});
+
+module.exports = router;
+```
+
+**Файл `v2/users.js`:**
+```javascript
+const express = require('express');
+const router = express.Router();
+
+router.get('/', (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  
+  res.json({
+    version: 'v2',
+    users: [
+      { id: 1, name: 'Alice', email: 'alice@example.com' },
+      { id: 2, name: 'Bob', email: 'bob@example.com' }
+    ],
+    meta: {
+      page,
+      limit,
+      total: 2
+    }
+  });
+});
+
+module.exports = router;
+```
+
+**Файл `app.js`:**
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+app.use(bodyParser.json());
+
+// Подключаем версии API
+app.use('/api/v1/users', require('./v1/users'));
+app.use('/api/v2/users', require('./v2/users'));
+
+// Депрецированная версия
+app.use('/api/users', (req, res) => {
+  res.status(410).json({
+    error: 'Gone',
+    message: 'API v0 is deprecated. Please use v1 or v2.',
+    docs: 'https://api.example.com/docs'
+  });
+});
+
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+```
+
+**Тестирование API:**
+```bash
+# Тестируем v1
+curl http://localhost:3000/api/v1/users
+
+# Тестируем v2 с пагинацией
+curl http://localhost:3000/api/v2/users?page=1&limit=10
+
+# Пробуем устаревшую версию
+curl http://localhost:3000/api/users
+```
+
+### **Пример 2: Версионирование через заголовки (Nginx)**
+
+Конфигурация Nginx для маршрутизации на разные версии API:
+```nginx
+server {
+    listen 80;
+    server_name api.example.com;
+
+    location /users {
+        if ($http_accept ~* "version=1") {
+            proxy_pass http://backend_v1;
+        }
+        if ($http_accept ~* "version=2") {
+            proxy_pass http://backend_v2;
+        }
+        
+        # Дефолтная версия
+        proxy_pass http://backend_v2;
+    }
+}
+```
+
+---
+
+## **Практическое задание**
+
+### **Задание 1: Реализация многоверсионного API**
+1. Создайте Express-приложение с тремя версиями API (`/v1`, `/v2`, `/v3`)
+2. В `v1` реализуйте простой эндпоинт `/products` с базовой информацией
+3. В `v2` добавьте фильтрацию продуктов по категориям
+4. В `v3` реализуйте полноценный CRUD для продуктов
+5. Добавьте middleware для логирования запросов к устаревшим версиям
+
+### **Задание 2: Миграция с одной версии на другую**
+1. Реализуйте механизм редиректа со старой версии на новую
+2. Добавьте заголовок `Deprecation` для устаревших версий
+3. Реализуйте автоматическое уведомление клиентов о скором удалении версии через заголовок `Sunset`
+
+---
+
+## **Дополнительные материалы и лучшие практики**
+
+### **Документирование версий API**
+- Используйте Swagger/OpenAPI с указанием версий
+- Поддерживайте changelog с описанием изменений между версиями
+- Явно указывайте сроки поддержки для каждой версии
+
+### **Мониторинг использования версий**
+- Логируйте, какие версии API используются клиентами
+- Анализируйте трафик по версиям перед их отключением
+- Используйте A/B-тестирование для новых версий
+
+### **Инструменты для управления версиями**
+- API Gateways (Kong, Apigee)
+- Документационные генераторы (Redoc, Swagger UI)
+- Системы мониторинга (Prometheus, Grafana)
+
+---
+
+## **Заключение**
+Управление версиями API — критически важный аспект разработки современных сервисов. Правильно выбранная стратегия версионирования позволяет:
+- Плавно вводить новые функции
+- Минимизировать проблемы для существующих клиентов
+- Обеспечивать предсказуемый жизненный цикл API
+
+Для углубленного изучения рекомендуется:
+- [API Versioning Best Practices (Microsoft)](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#versioning)
+- [REST API Tutorial: Versioning](https://restfulapi.net/versioning/)
