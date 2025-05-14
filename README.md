@@ -1,32 +1,250 @@
-# Интеграция информационных систем с использованием API и микросервисов
 |||
 |---|---|
-|Направление подготовки|Дополнительная профессиональная программа профессиональной переподготовки|
+|ДИСЦИПЛИНА|Интеграция информационных систем с использованием API и микросервисов|
 |Подразделение|ПИШ СВЧ-электроники|
-|Курс, семестр|1 семестр|
+|ВИД УЧЕБНОГО МАТЕРИАЛА|Методические указания к практическим занятиям|
+|ПРЕПОДАВАТЕЛЬ|Астафьев Рустам Уралович|
+|СЕМЕСТР|1 семестр, 2024/2025 уч. год|
 
-## Логика курса
+Ссылка на GitHub репозиторий:
+https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-9
 
-Блок моих занятий нацелен на получение **базовых навыков** в области использования **основных технологий и инструментов при разработке API** и их роли в построении программного обеспечения.
+## Практическое занятие №9 - Аутентификация (OAuth2, JWT). Управление версиями API
 
-Ожидается, что занятия будут построены так, чтобы задания формулировались в два трека: **Разработка** и **Аналитика**, то есть будет предусмотрена дифференциация на тех, кто чувствует себя уверенно в области разработки программных модулей и тех, кто чувствует себя уверенно в области системной аналитики.
+## **Введение**  
+Аутентификация и авторизация — ключевые аспекты безопасности современных веб-приложений. В этом занятии мы разберём два важных механизма: **JWT (JSON Web Tokens)** и **OAuth2**.  
 
-Некоторые из материалов курса представлены в соответствующих ветках данного репозитория:
+JWT — это стандарт для создания токенов, которые позволяют передавать информацию между клиентом и сервером в зашифрованном виде. OAuth2 — это протокол, который позволяет приложениям получать ограниченный доступ к данным пользователя без передачи пароля.  
 
-|№ занятия|Тема занятия|
-|---|---|
-|1|[Эволюция архитектур: монолит, SOA, микросервисы](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1)|
-|2|[Зачем нужна интеграция: задачи, подходы и основные принципы](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2)|
-|3|[REST, SOAP, GraphQL, gRPC. Форматы данных: JSON, XML, Protocol Buffers](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-3)|
-|4|[Обзор платформ (Apache Camel, MuleSoft, RabbitMQ). Практика использования брокеров сообщений и шины данных](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-4)|
-|5|[Принципы RESTful API и его ограничения](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-5)|
-|6|[Принципы RESTful API и его ограничения. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-6)|
-|7|[GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-7)|
-|8|[GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-8)|
-|9|[Аутентификация (OAuth2, JWT). Управление версиями API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-9)|
-|10|[Аутентификация (OAuth2, JWT). Управление версиями API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-10)|
-|11|[Создание RESTful API. Реализация GraphQL и gRPC API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-11)|
-|12|[Создание RESTful API. Реализация GraphQL и gRPC API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-12)|
-|13|[Обзор фреймворков (Spring Boot, Micronaut, Node.js). Взаимодействие через API Gateway](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-13)|
-|14|[Связь между микросервисами: API и брокеры сообщений](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-14)|
-|15|[Связь между микросервисами: API и брокеры сообщений. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-15)|
+Мы начнём с теории, затем разберём примеры на Node.js и закончим практическим заданием, где реализуем аутентификацию с JWT и интеграцию OAuth2.  
+
+---
+
+## **Теоретическая часть**  
+
+### **JWT (JSON Web Token)**  
+JWT — это компактный способ передачи данных между сторонами в виде JSON-объекта. Токен состоит из трёх частей:  
+
+**1. Header**  
+Содержит метаданные, такие как алгоритм подписи (`HS256`, `RS256`) и тип токена (`JWT`). Пример:  
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```  
+
+**2. Payload**  
+Хранит полезные данные (claims), например, идентификатор пользователя, его роль и время жизни токена. Пример:  
+```json
+{
+  "userId": 123,
+  "role": "admin",
+  "exp": 1735689600
+}
+```  
+
+**3. Signature**  
+Создаётся путём кодирования header и payload с использованием секретного ключа. Это гарантирует, что токен не был изменён.  
+
+**Преимущества JWT:**  
+- **Stateless** — серверу не нужно хранить сессии.  
+- **Универсальность** — можно использовать в микросервисах.  
+- **Безопасность** — подпись предотвращает подделку.  
+
+**Недостатки JWT:**  
+- Токен нельзя отозвать без дополнительных механизмов (например, чёрного списка).  
+- Если токен украден, злоумышленник может использовать его до истечения срока действия.  
+
+---
+
+### **OAuth2**  
+OAuth2 — это протокол для **делегирования доступа**. Он позволяет приложениям получать доступ к данным пользователя без передачи пароля.  
+
+**Основные роли в OAuth2:**  
+- **Resource Owner** — пользователь, который владеет данными.  
+- **Client** — приложение, запрашивающее доступ.  
+- **Authorization Server** — сервер, который выдаёт токены (например, Google, GitHub).  
+- **Resource Server** — API, защищённое токеном.  
+
+**Основные флоу OAuth2:**  
+1. **Authorization Code Flow** — самый безопасный, используется в веб-приложениях.  
+2. **Implicit Flow** (устарел) — использовался в SPA, но считается небезопасным.  
+3. **Client Credentials** — для сервис-сервисной аутентификации.  
+4. **Password Grant** — передача логина и пароля (не рекомендуется).  
+
+---
+
+## **Практическая часть**  
+
+### **Пример 1: Реализация JWT в Node.js**  
+Создадим простое API с аутентификацией через JWT.  
+
+**1. Установка зависимостей:**  
+```bash
+npm init -y
+npm install express jsonwebtoken body-parser
+```  
+
+**2. Сервер (`server.js`):**  
+```javascript
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.json());
+
+const SECRET_KEY = 'your_secret_key_here';
+
+// Эндпоинт для входа
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // В реальном приложении проверяем в БД
+  if (username === 'admin' && password === '123') {
+    const token = jwt.sign(
+      { userId: 1, role: 'admin' },
+      SECRET_KEY,
+      { expiresIn: '1h' }
+    );
+    res.json({ token });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+// Защищённый эндпоинт
+app.get('/profile', (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'No token provided' });
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    res.json({ userId: decoded.userId, role: decoded.role });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+```  
+
+**3. Тестирование:**  
+- Запустите сервер: `node server.js`.  
+- Отправьте POST-запрос на `/login`:  
+  ```PowerShell
+  Invoke-WebRequest `
+  -Uri "http://localhost:3000/login" `
+  -Method POST `
+  -Headers @{ "Content-Type" = "application/json" } `
+  -Body '{"username":"admin","password":"123"}'
+  ```
+  
+- Ответ:
+  ```PowerShell
+    StatusCode        : 200
+    StatusDescription : OK
+    Content           : {"token":"..."}
+    RawContent        : HTTP/1.1 200 OK
+                        Connection: keep-alive
+                        Keep-Alive: timeout=5
+                        Content-Length: 175
+                        Content-Type: application/json; charset=utf-8
+                        Date: Wed, 14 May 2025 06:23:14 GMT
+                        ETag: W/"af-bq7Uf3MBBM+C8my/l7k...
+    Forms             : {}
+    Headers           : {[Connection, keep-alive], [Keep-Alive, timeout=5], [Content-Length, 175], [Content-Type, application/json; charset=utf-8]...}
+    Images            : {}
+    InputFields       : {}
+    Links             : {}
+    ParsedHtml        : mshtml.HTMLDocumentClass
+    RawContentLength  : 175
+  ```
+
+- Проверьте `/profile` с токеном:
+
+  ```PowerShell
+    $token = "..."
+    Invoke-WebRequest -Uri "http://localhost:3000/profile" -Headers @{ "Authorization" = "Bearer $token" }
+  ```
+
+---
+
+### **Пример 2: Интеграция OAuth2 (Google)**
+
+**ВАЖНО! ЭТО ПРИМЕР, ВЫПОЛНЯТЬ ДЕЙСТВИЯ НЕ НУЖНО, ТАК КАК НЕОБХОДИМ ПЛАТЕЖНЫЙ АККАУНТ СЕРВИСА. ПРИМЕР ТОЛЬКО ДЛЯ ОЗНАКОМЛЕНИЯ СО СТРУКТУРОЙ КОДА**
+
+Реализуем вход через Google OAuth2.  
+
+**1. Настройка Google OAuth:**  
+- Зайдите в [Google Cloud Console](https://console.cloud.google.com/).  
+- Создайте проект и добавьте OAuth 2.0 Client ID.  
+- Укажите `http://localhost:3000/auth/google/callback` как **Redirect URI**.  
+
+**2. Установка зависимостей:**  
+```bash
+npm install passport passport-google-oauth20 express-session
+```  
+
+**3. Сервер (`oauth-server.js`):**  
+```javascript
+const express = require('express');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const session = require('express-session');
+
+const app = express();
+
+app.use(session({ secret: 'your_secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new GoogleStrategy({
+    clientID: 'YOUR_GOOGLE_CLIENT_ID',
+    clientSecret: 'YOUR_GOOGLE_CLIENT_SECRET',
+    callbackURL: 'http://localhost:3000/auth/google/callback'
+  },
+  (accessToken, refreshToken, profile, done) => {
+    return done(null, profile);
+  }
+));
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect('/profile');
+  }
+);
+
+app.get('/profile', (req, res) => {
+  if (!req.user) return res.redirect('/auth/google');
+  res.json(req.user);
+});
+
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+```  
+
+**4. Тестирование:**  
+- Перейдите по `http://localhost:3000/auth/google`.  
+- Авторизуйтесь через Google.  
+- После редиректа вы увидите данные профиля.  
+
+---
+
+## Практическое задание
+В рамках задания по текущему занятию необходимо добавить простую аутентификацию для пользователей системы интернет-магазина (на основе одной из предыдущих практик)
+
+## **Заключение**  
+Мы разобрали:  
+- Как работает JWT и как его использовать для аутентификации.  
+- Основы OAuth2 и интеграцию с Google.  
