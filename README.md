@@ -5,28 +5,23 @@
 |Подразделение|ПИШ СВЧ-электроники|
 |Курс, семестр|1 семестр|
 
-## Логика курса
+## Практическое задание
 
-Блок моих занятий нацелен на получение **базовых навыков** в области использования **основных технологий и инструментов при разработке API** и их роли в построении программного обеспечения.
+Данное практическое занятие посвящено практической подготовки систем-проектов по итогам второго модуля. Суть занятия - последовательная разработка задания по модулю (приведено в предыдущем практическом занятии).
 
-Ожидается, что занятия будут построены так, чтобы задания формулировались в два трека: **Разработка** и **Аналитика**, то есть будет предусмотрена дифференциация на тех, кто чувствует себя уверенно в области разработки программных модулей и тех, кто чувствует себя уверенно в области системной аналитики.
+В рамках задания необходимо:
 
-Некоторые из материалов курса представлены в соответствующих ветках данного репозитория:
+1. Продумать и спроектировать схему взаимодействия микросервисов из задания, обеспечить единообразие систем, обеспечить качественные и эффективные связи компонентов и управления **(базовый уровень)**.
 
-|№ занятия|Тема занятия|
-|---|---|
-|1|[Эволюция архитектур: монолит, SOA, микросервисы](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-1)|
-|2|[Зачем нужна интеграция: задачи, подходы и основные принципы](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-2)|
-|3|[REST, SOAP, GraphQL, gRPC. Форматы данных: JSON, XML, Protocol Buffers](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-3)|
-|4|[Обзор платформ (Apache Camel, MuleSoft, RabbitMQ). Практика использования брокеров сообщений и шины данных](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-4)|
-|5|[Принципы RESTful API и его ограничения](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-5)|
-|6|[Принципы RESTful API и его ограничения. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-6)|
-|7|[GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-7)|
-|8|[GraphQL: особенности и применение. gRPC: высокопроизводительное взаимодействие. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-8)|
-|9|[Аутентификация (OAuth2, JWT). Управление версиями API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-9)|
-|10|[Аутентификация (OAuth2, JWT). Управление версиями API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-10)|
-|11|[Создание RESTful API. Реализация GraphQL и gRPC API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-11)|
-|12|[Создание RESTful API. Реализация GraphQL и gRPC API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-12)|
-|13|[Обзор фреймворков (Spring Boot, Micronaut, Node.js). Взаимодействие через API Gateway](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-13)|
-|14|[Связь между микросервисами: API и брокеры сообщений](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-14)|
-|15|[Связь между микросервисами: API и брокеры сообщений. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-15)|
+2. Спроектировать три микросервиса в соответствии с заданием, протестировать их работу через инструменты Postman, curl или иных средств ручной имитации запросов к сервисам **(средний уровень)**.
+
+3. Разработать единую систему (на уровне бэкенд+фронтенд), которая бы объединяла в себе работу трех представленных микросервисов и предоставляла базовый интерфейс работы ссистемой **(продвинутый уровень)**.
+
+4. Подготовить презентацию полученного проекта (в соответствии с выбранным уровнем), куда включить:
+   - информацию об авторе (ФИО + группа при наличии);
+   - постановку задачи и выбранный уровень задания;
+   - содержательные результаты (схемы, документация, интерфейсы, тестирование);
+
+5. Подготовить доклад по презентации на 3 минуты с защитой работы.
+
+6. Презентацию загрузить в СДО в раздел с подгрузкой презентаций.
