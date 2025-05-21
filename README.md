@@ -26,7 +26,5 @@
 |9|[Аутентификация (OAuth2, JWT). Управление версиями API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-9)|
 |10|[Аутентификация (OAuth2, JWT). Управление версиями API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-10)|
 |11|[Создание RESTful API. Реализация GraphQL и gRPC API](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-11)|
-|12|[Создание RESTful API. Реализация GraphQL и gRPC API. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-12)|
-|13|[Обзор фреймворков (Spring Boot, Micronaut, Node.js). Взаимодействие через API Gateway](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-13)|
-|14|[Связь между микросервисами: API и брокеры сообщений](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-14)|
-|15|[Связь между микросервисами: API и брокеры сообщений. Продолжение](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-15)|
+|12|[Выполнение заданий по подготовке проекта](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-12)|
+|13|[Презентация проектов по итогам второго модуля](https://github.com/astafiev-rustam/Integration-of-information-systems/tree/Practice-1-13)|
